@@ -1,4 +1,4 @@
-export const Downarrow = () => {
+export const UpArrow = () => {
   return (
     <div>
       <svg
@@ -12,7 +12,12 @@ export const Downarrow = () => {
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
-          d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5"
+          d="m4.5 18.75 7.5-7.5 7.5 7.5"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="m4.5 12.75 7.5-7.5 7.5 7.5"
         />
       </svg>
     </div>
