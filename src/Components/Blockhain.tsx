@@ -21,40 +21,46 @@ export const Blockchain = ({ type }: BlockProps) => {
     try {
       const mnemonic = generateMnemonic();
       const seed = mnemonicToSeedSync(mnemonic);
+      console.log("Seed generated:", seed.toString("hex")); // Debug seed
 
       // Store mnemonic words
       const mnemonicWords = mnemonic.split(" ");
       setWordsArray([mnemonicWords]);
-      console.log("Mnemonic generated:", mnemonicWords);
+      console.log("Mnemonic words:", mnemonicWords);
 
       const generatedWallets: Wallet[] = [];
       for (let i = 0; i < 4; i++) {
         const path = `m/44'/${type === "solana" ? "501" : "60"}'/${i}'/0'`;
+        console.log("Derivation path:", path); // Debug path
         const derivedSeed = derivePath(path, seed.toString("hex")).key;
+        console.log("Derived seed:", derivedSeed.toString("hex")); // Debug derived seed
 
-        // Generate the key pair from the derived seed
         const keyPair = nacl.sign.keyPair.fromSeed(derivedSeed);
+        console.log("Keypair public key:", Buffer.from(keyPair.publicKey).toString("hex")); // Debug keypair
+
         const secret = Buffer.from(keyPair.secretKey).toString("hex");
         const pubkey = Keypair.fromSecretKey(keyPair.secretKey).publicKey.toBase58();
 
-        generatedWallets.push({
+        const wallet = {
           publicKey: pubkey,
           privateKey: secret,
-        });
+        };
+        console.log("Generated wallet:", wallet); // Debug each wallet
+        generatedWallets.push(wallet);
       }
 
-      console.log("Generated wallets:", generatedWallets);
+      console.log("Final generated wallets:", generatedWallets); // Debug final array
       setWallets(generatedWallets); // Update state
     } catch (error) {
-      console.error("Error generating wallets:", error);
+      console.error("Error in generateWallets:", error);
     }
   }
 
   useEffect(() => {
+    console.log("useEffect triggered with type:", type);
     generateWallets();
-  }, [type]); // Re-run when `type` changes
+  }, [type]);
 
-  // Debug wallets whenever it updates
   useEffect(() => {
     console.log("Wallets state updated:", wallets);
   }, [wallets]);
