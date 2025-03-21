@@ -27,15 +27,15 @@ export const Blockchain = ({ type }: BlockProps) => {
       console.log("Mnemonic words:", mnemonicWords);
 
       const generatedWallets: Wallet[] = [];
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 1; i++) {
         const path = `m/44'/${type === "solana" ? "501" : "60"}'/${i}'/0'`;
         console.log("Derivation path:", path); // Debug path
 
-        // 🔹 Use only the first 32 bytes of the seed for key generation
+        //  Use only the first 32 bytes of the seed for key generation
         const derivedSeed = seed.slice(0, 32);
         console.log("Derived seed:", Buffer.from(derivedSeed).toString("hex")); // Debug derived seed
 
-        // 🔹 Generate key pair using @noble/ed25519
+        //  Generate key pair using @noble/ed25519
         const publicKey = await ed25519.getPublicKey(derivedSeed);
         console.log("Keypair public key:", Buffer.from(publicKey).toString("hex")); // Debug public key
 
@@ -67,7 +67,7 @@ export const Blockchain = ({ type }: BlockProps) => {
   }, [wallets]);
 
   return (
-    <div>
+    <div className="">
       <h2>Generated {type} Wallets</h2>
       {wallets.length === 0 ? (
         <p>No wallets generated yet...</p>

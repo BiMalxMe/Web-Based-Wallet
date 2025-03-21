@@ -9,6 +9,7 @@ import { Button } from "./Components/Button";
 import { Main } from "./Components/Main";
 import { Blockchain } from "./Components/Blockhain";
 import { Check } from "./Components/Check";
+import { AddDelWallet } from "./Components/AddDelWallet";
 
 // Ensure Buffer is available in the browser
 //@ts-ignore
@@ -30,7 +31,8 @@ function App() {
       <Appbar />
       {solana ? (
         <div>
-          <Blockchain type="solana" />
+          {/* <Blockchain type="solana" /> */}
+          < AddDelWallet />
         </div>
       ) : (
         ""
