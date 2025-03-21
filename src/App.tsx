@@ -8,6 +8,7 @@ import { UpArrow } from "./Components/UpArrow";
 import { Button } from "./Components/Button";
 import { Main } from "./Components/Main";
 import { Blockchain } from "./Components/Blockhain";
+import { Check } from "./Components/Check";
 
 // Ensure Buffer is available in the browser
 //@ts-ignore
