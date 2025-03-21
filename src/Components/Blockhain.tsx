@@ -1,7 +1,5 @@
-import nacl from "tweetnacl";
 import { generateMnemonic, mnemonicToSeedSync } from "bip39";
-import { derivePath } from "ed25519-hd-key";
-import { Keypair } from "@solana/web3.js";
+import { ed25519 } from "@noble/curves/ed25519";
 import { useState, useEffect } from "react";
 
 interface BlockProps {
@@ -32,14 +30,17 @@ export const Blockchain = ({ type }: BlockProps) => {
       for (let i = 0; i < 4; i++) {
         const path = `m/44'/${type === "solana" ? "501" : "60"}'/${i}'/0'`;
         console.log("Derivation path:", path); // Debug path
-        const derivedSeed = derivePath(path, seed.toString("hex")).key;
-        console.log("Derived seed:", derivedSeed.toString("hex")); // Debug derived seed
 
-        const keyPair = nacl.sign.keyPair.fromSeed(derivedSeed);
-        console.log("Keypair public key:", Buffer.from(keyPair.publicKey).toString("hex")); // Debug keypair
+        // 🔹 Use only the first 32 bytes of the seed for key generation
+        const derivedSeed = seed.slice(0, 32);
+        console.log("Derived seed:", Buffer.from(derivedSeed).toString("hex")); // Debug derived seed
 
-        const secret = Buffer.from(keyPair.secretKey).toString("hex");
-        const pubkey = Keypair.fromSecretKey(keyPair.secretKey).publicKey.toBase58();
+        // 🔹 Generate key pair using @noble/ed25519
+        const publicKey = await ed25519.getPublicKey(derivedSeed);
+        console.log("Keypair public key:", Buffer.from(publicKey).toString("hex")); // Debug public key
+
+        const secret = Buffer.from(derivedSeed).toString("hex");
+        const pubkey = Buffer.from(publicKey).toString("hex");
 
         const wallet = {
           publicKey: pubkey,
