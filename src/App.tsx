@@ -27,7 +27,7 @@ function App() {
   const wordsArray = mnemonic.split(" ");
   console.log(wordsArray);
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-800 text-white pt-20">
+    <div className="min-h-screen flex flex-col items-center bg-gray-700 text-white pt-20">
       <Appbar />
       {solana ? (
         <div>

@@ -26,8 +26,10 @@ export const AddDelWallet = () => {
       </div>
     </div>
     <div className="flex justify-center items-center">
-
+    <div>
     <Blockchain type="solana"/>
+    <Blockchain type="solana"/>
+    </div>
     </div>
 
     </div>
