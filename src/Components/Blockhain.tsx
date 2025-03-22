@@ -1,6 +1,7 @@
 import { generateMnemonic, mnemonicToSeedSync } from "bip39";
 import { ed25519 } from "@noble/curves/ed25519";
 import { useState, useEffect } from "react";
+import { Hide } from "./Hide";
 
 interface BlockProps {
   type: "solana" | "ethereum";
@@ -11,6 +12,9 @@ export const Blockchain = ({ type }: BlockProps) => {
     publicKey: string;
     privateKey: string;
   };
+
+
+  //Yesma sabai bhanda badi time dubug ma lagyo khai old dependecny vayera ho ki k
 
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [wordsArray, setWordsArray] = useState<string[][]>([]);
@@ -67,22 +71,10 @@ export const Blockchain = ({ type }: BlockProps) => {
   }, [wallets]);
 
   return (
-    <div className="">
-      <h2>Generated {type} Wallets</h2>
-      {wallets.length === 0 ? (
-        <p>No wallets generated yet...</p>
-      ) : (
-        wallets.map((wallet, index) => (
-          <div key={index}>
-            <p><strong>Wallet {index + 1}:</strong></p>
-            <p>Public Key: {wallet.publicKey}</p>
-            <p>Private Key: {wallet.privateKey}</p>
-          </div>
-        ))
-      )}
-
-      <h2>Mnemonic Words</h2>
-      <ul>
+    <div className="justify-center items-center">
+        <div >
+      <h2 className="items-center justify-center flex">Mnemonic Words</h2>
+      <ul className="items-center justify-center flex">
         {wordsArray.length === 0 ? (
           <li>No mnemonic generated yet...</li>
         ) : (
@@ -91,6 +83,23 @@ export const Blockchain = ({ type }: BlockProps) => {
           ))
         )}
       </ul>
+      </div>
+      <div>
+      <h2 className="items-center justify-center flex ">Generated {type} Wallets</h2>
+      {wallets.length === 0 ? (
+        <p>No wallets generated yet...</p>
+      ) : (
+        wallets.map((wallet, index) => (
+          <div key={index} className="border border-slate-900 rounded-2xl p-4 shadow-lg  hover:bg-slate-700 hover:scale-95">
+            <p className="items-center justify-center flex font-extrabold bg-slate-600"><strong>Wallet {index + 1}:</strong></p>
+            <p className="items-center justify-center flex my-4 font-bold">Public Key:<span className="font-light mx-4 bg-gray-800">{wallet.publicKey}</span> </p>
+            <p className="items-center justify-center flex my-4 font-bold">Private Key: <span className=" bg-gray-800 font-light mx-4">{wallet.privateKey}</span><Hide /></p>
+            <p className="items-center justify-center flex"></p>
+          </div>
+        ))
+      )}
+      </div>
+    
     </div>
   );
 };
