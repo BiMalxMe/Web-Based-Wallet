@@ -33,7 +33,7 @@ export const Blockchain = ({ type }: BlockProps) => {
       const seed = mnemonicToSeedSync(mnemonic);
        // Store mnemonic words
        const mnemonicWords = mnemonic.split(" ");
-       setWordsArray(mnemonicWords);
+       setWordsArray([mnemonicWords]);
        console.log("Mnemonic words:", mnemonicWords);
       console.log("Seed generated:", seed.toString("hex")); // Debug seed
 
