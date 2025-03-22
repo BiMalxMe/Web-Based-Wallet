@@ -1,4 +1,7 @@
 import { generateMnemonic } from "bip39";
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 import { useState } from "react";
 import { Buffer } from "buffer";
@@ -28,6 +31,8 @@ function App() {
   console.log(wordsArray);
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-700 text-white pt-20">
+          <ToastContainer/>
+
       <Appbar />
       {solana ? (
         <div>
