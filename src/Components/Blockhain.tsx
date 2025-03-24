@@ -26,6 +26,8 @@ export const Blockchain = ({ type }: BlockProps) => {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [wordsArray, setWordsArray] = useState<string[][]>([]);
   const [password, setPasword] = useState(false);
+  const [dis,setDis] = useState<Boolean>(true)
+  
 
   async function generateWallets() {
     try {
@@ -76,14 +78,14 @@ export const Blockchain = ({ type }: BlockProps) => {
   useEffect(() => {
     console.log("useEffect triggered with type:", type);
     generateWallets();
-  }, [type]);
+    setDis(false)
+ }, []);
 
-  useEffect(() => {
-    console.log("Wallets state updated:", wallets);
-  }, [wallets]);
+  
 
   return (
     <div className="justify-center items-center">
+      {dis?
       <div>
         <h2 className="items-center justify-center flex">Mnemonic Words</h2>
         <ul className="items-center justify-center flex">
@@ -95,10 +97,9 @@ export const Blockchain = ({ type }: BlockProps) => {
       </div>
     ))}
   </div>
-))}
-
-        </ul>
+))}     </ul>
       </div>
+:" hu"}
       <div>
         <h2 className="items-center justify-center flex ">
           Generated {type} Wallets
@@ -125,6 +126,7 @@ export const Blockchain = ({ type }: BlockProps) => {
                 <input
                   type={password?"text":"password"}
                   value={wallet.privateKey}
+                  // @ts-ignore
                   onClick={(e:React.MouseEvent<HTMLInputElement>)=>{navigator.clipboard.writeText(e.target.value);
                     notify("Copied to Clipboard");<ToastContainer />
                   }}
