@@ -5,6 +5,8 @@ import { Hide } from "./Hide";
 import { Show } from "./Show";
 import { ToastContainer } from "react-toastify/unstyled";
 import { toast } from "react-toastify";
+import { Downarrow } from "./Downarrow";
+import { UpArrow } from "./UpArrow";
 
 // Yo global variable ho, jun le track garxa ki mnemonic display bhaeko cha ki chaina
 let hasDisplayedMnemonic = false;
@@ -47,6 +49,7 @@ export const Blockchain = ({ type }: BlockProps) => {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const [password, setPassword] = useState(false);
   const [shouldDisplayMnemonic, setShouldDisplayMnemonic] = useState(false);
+  const [extend,setextend]=useState(false)
 
   // Wallet generate garne function
   async function generateWallets() {
@@ -92,15 +95,22 @@ export const Blockchain = ({ type }: BlockProps) => {
       {/* Mnemonic dekhaune logic, pahilo instance ma matra dekhincha */}
       {shouldDisplayMnemonic && (
         <div>
-          <h2 className="items-center justify-center flex">Mnemonic Words</h2>
+          <div className="flex justify-center items-center gap-4">
+          <h2 className="items-center justify-center flex text-2xl">Mnemonic Words</h2>
+          <div onClick={() => setextend(!extend)}>
+          {extend?<Downarrow />:
+          <UpArrow />}
+          </div>
+          </div>
           <ul className="items-center justify-center flex flex-wrap gap-2">
+            {extend?"":
             <ul className="grid grid-cols-4 grid-rows-3 gap-2 justify-center m-4">
   {globalMnemonicWords.map((word, wordIndex) => (
-    <li key={wordIndex} className="flex justify-center items-center px-14 bg-slate-900 rounded-4xl py-4">
+    <li key={wordIndex} className="flex justify-center items-center px-12 bg-slate-900 rounded-4xl py-4">
       {word}
     </li>
   ))}
-</ul>
+</ul>}
           </ul>
         </div>
       )}
