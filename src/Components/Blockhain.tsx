@@ -94,11 +94,13 @@ export const Blockchain = ({ type }: BlockProps) => {
         <div>
           <h2 className="items-center justify-center flex">Mnemonic Words</h2>
           <ul className="items-center justify-center flex flex-wrap gap-2">
-            {globalMnemonicWords.map((word, wordIndex) => (
-              <li key={wordIndex}>
-                {word} {/* Har ek word dekhauncha */}
-              </li>
-            ))}
+            <ul className="grid grid-cols-4 grid-rows-3 gap-2 justify-center m-4">
+  {globalMnemonicWords.map((word, wordIndex) => (
+    <li key={wordIndex} className="flex justify-center items-center px-14 bg-slate-900 rounded-4xl py-4">
+      {word}
+    </li>
+  ))}
+</ul>
           </ul>
         </div>
       )}
