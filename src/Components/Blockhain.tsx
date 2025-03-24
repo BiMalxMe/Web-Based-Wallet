@@ -5,112 +5,115 @@ import { Hide } from "./Hide";
 import { Show } from "./Show";
 import { ToastContainer } from "react-toastify/unstyled";
 import { toast } from "react-toastify";
+
+// Yo global variable ho, jun le track garxa ki mnemonic display bhaeko cha ki chaina
+let hasDisplayedMnemonic = false;
+
 interface BlockProps {
   type: "solana" | "ethereum";
 }
 
+// Yo function le mnemonic generate garxa ya localStorage bata lincha, ek choti matra run huncha
+const initializeMnemonic = (): string[] => {
+  const storedMnemonic = localStorage.getItem("globalMnemonic");
+  if (storedMnemonic) {
+    return storedMnemonic.split(" ");
+  } else {
+    const mnemonic = generateMnemonic();
+    localStorage.setItem("globalMnemonic", mnemonic);
+    console.log("Global mnemonic generated:", mnemonic);
+    return mnemonic.split(" ");
+  }
+};
+
+// Yo global variable ho, jaha mnemonic words rakhcha ek choti initialize garera
+const globalMnemonicWords = initializeMnemonic();
+
 export const Blockchain = ({ type }: BlockProps) => {
-
-  const notify = (text : String) => {
+  // Toast notification ko lagi function, copy garda message dekhauncha
+  const notify = (text: string) => {
     toast.success(text, {
-      autoClose: 2000, // 3 seconds
-    });  }
+      autoClose: 2000,
+    });
+  };
 
+  // Wallet ko type define garxa
   type Wallet = {
     publicKey: string;
     privateKey: string;
   };
 
-  //Yesma sabai bhanda badi time dubug ma lagyo khai old dependecny vayera ho ki k
-
+  // State haru: wallets store garna, private key show/hide garna, ra mnemonic display garna
   const [wallets, setWallets] = useState<Wallet[]>([]);
-  const [wordsArray, setWordsArray] = useState<string[][]>([]);
-  const [password, setPasword] = useState(false);
-  const [dis,setDis] = useState<Boolean>(true)
-  
+  const [password, setPassword] = useState(false);
+  const [shouldDisplayMnemonic, setShouldDisplayMnemonic] = useState(false);
 
+  // Wallet generate garne function
   async function generateWallets() {
     try {
-      const mnemonic = generateMnemonic();
-      const seed = mnemonicToSeedSync(mnemonic);
-       // Store mnemonic words
-       const mnemonicWords = mnemonic.split(" ");
-       setWordsArray([mnemonicWords]);
-       console.log("Mnemonic words:", mnemonicWords);
-      console.log("Seed generated:", seed.toString("hex")); // Debug seed
-
-     
+      const seed = mnemonicToSeedSync(globalMnemonicWords.join(" "));
+      console.log("Seed generated:", seed.toString("hex"));
 
       const generatedWallets: Wallet[] = [];
-      for (let i = 0; i < 1; i++) {
-        const path = `m/44'/${type === "solana" ? "501" : "60"}'/${i}'/0'`;
-        console.log("Derivation path:", path); // Debug path
+      const path = `m/44'/${type === "solana" ? "501" : "60"}'/0'/0'`;
+      console.log("Derivation path:", path);
 
-        //  Use only the first 32 bytes of the seed for key generation
-        const derivedSeed = seed.slice(0, 32);
-        console.log("Derived seed:", Buffer.from(derivedSeed).toString("hex")); // Debug derived seed
+      const derivedSeed = seed.slice(0, 32);
+      const publicKey = await ed25519.getPublicKey(derivedSeed);
 
-        //  Generate key pair using @noble/ed25519
-        const publicKey = await ed25519.getPublicKey(derivedSeed);
-        console.log(
-          "Keypair public key:",
-          Buffer.from(publicKey).toString("hex")
-        ); // Debug public key
+      const secret = Buffer.from(derivedSeed).toString("hex");
+      const pubkey = Buffer.from(publicKey).toString("hex");
 
-        const secret = Buffer.from(derivedSeed).toString("hex");
-        const pubkey = Buffer.from(publicKey).toString("hex");
+      const wallet = {
+        publicKey: pubkey,
+        privateKey: secret,
+      };
+      generatedWallets.push(wallet);
 
-        const wallet = {
-          publicKey: pubkey,
-          privateKey: secret,
-        };
-        console.log("Generated wallet:", wallet); // Debug each wallet
-        generatedWallets.push(wallet);
-      }
-
-      console.log("Final generated wallets:", generatedWallets); // Debug final array
-      setWallets(generatedWallets); // Update state
+      setWallets(generatedWallets);
     } catch (error) {
       console.error("Error in generateWallets:", error);
     }
   }
 
+  // Yo useEffect component mount huda ek choti run huncha
   useEffect(() => {
-    console.log("useEffect triggered with type:", type);
+    // Check garxa ki mnemonic display bhaeko cha ki chaina
+    if (!hasDisplayedMnemonic && globalMnemonicWords.length > 0) {
+      setShouldDisplayMnemonic(true);
+      hasDisplayedMnemonic = true; // Global flag set garxa taaki aru le nadekhaos
+    }
     generateWallets();
-    setDis(false)
- }, []);
+  }, []); // Empty array le ek choti matra run garxa mount huda
 
-  
-
+  // UI render garne part
   return (
     <div className="justify-center items-center">
-      {dis?
+      {/* Mnemonic dekhaune logic, pahilo instance ma matra dekhincha */}
+      {shouldDisplayMnemonic && (
+        <div>
+          <h2 className="items-center justify-center flex">Mnemonic Words</h2>
+          <ul className="items-center justify-center flex flex-wrap gap-2">
+            {globalMnemonicWords.map((word, wordIndex) => (
+              <li key={wordIndex}>
+                {word} {/* Har ek word dekhauncha */}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div>
-        <h2 className="items-center justify-center flex">Mnemonic Words</h2>
-        <ul className="items-center justify-center flex">
-        {wordsArray.map((words, index) => (
-  <div key={index}>
-    {words.map((word, wordIndex) => (
-      <div key={wordIndex}>
-        {word}
-      </div>
-    ))}
-  </div>
-))}     </ul>
-      </div>
-:" hu"}
-      <div>
-        <h2 className="items-center justify-center flex ">
+        {/* Wallet dekhaune section */}
+        <h2 className="items-center justify-center flex">
           Generated {type} Wallets
         </h2>
         {wallets.length === 0 ? (
-          <p>No wallets generated yet...</p>
+          <p>No wallets generated yet...</p> // Wallet nahuda yo dekhincha
         ) : (
           wallets.map((wallet, index) => (
             <div
               key={index}
-              className="border border-slate-900 rounded-2xl p-4 shadow-lg  hover:bg-slate-700 hover:scale-95"
+              className="border border-slate-900 rounded-2xl p-4 shadow-lg hover:bg-slate-700 hover:scale-95"
             >
               <p className="items-center justify-center flex font-extrabold bg-slate-600">
                 <strong>Wallet {index + 1}:</strong>
@@ -119,29 +122,29 @@ export const Blockchain = ({ type }: BlockProps) => {
                 Public Key:
                 <span className="font-light mx-4 bg-gray-800">
                   {wallet.publicKey}
-                </span>{" "}
+                </span>
               </p>
               <p className="items-center justify-center flex my-4 font-bold">
-                Private Key:{" "}
+                Private Key:
                 <input
-                  type={password?"text":"password"}
+                  type={password ? "text" : "password"}
                   value={wallet.privateKey}
-                  // @ts-ignore
-                  onClick={(e:React.MouseEvent<HTMLInputElement>)=>{navigator.clipboard.writeText(e.target.value);
-                    notify("Copied to Clipboard");<ToastContainer />
+                  onClick={(e) => {
+                    navigator.clipboard.writeText(e.currentTarget.value);
+                    notify("Copied to Clipboard");
                   }}
                   readOnly
                   className="w-full bg-gray-800 font-light mx-4 px-2 py-1 rounded focus:outline-none active:copy"
                 />
-                <div className="" onClick={() => setPasword(!password)}>
+                <div className="" onClick={() => setPassword(!password)}>
                   {password ? <Show /> : <Hide />}
                 </div>
               </p>
-              <p className="items-center justify-center flex"></p>
             </div>
           ))
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
