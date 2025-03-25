@@ -3,40 +3,47 @@ import { Button } from "./Button";
 import { Blockchain } from "./Blockhain";
 
 enum stateProp {
+  show,
+  hide,
   add,
-  delete,
 }
 
 export const AddDelWallet = () => {
-  const [status, setStatus] = useState<stateProp | undefined>();
+  const [status, setStatus] = useState<stateProp | undefined>(stateProp.show); // Wallet add ya delete garne state track garxa
 
   return (
     <div className="min-h-screen">
-      <div className="bg-emerald-400 p-4 flex justify-center items-center">
-        <div>
+      {/* Upar ko section jaha button haru cha */}
+      <div className=" flex justify-center items-center">
         <div className="flex gap-4">
-          <Button text="Add Wallet" onClick={() => setStatus(stateProp.add)} />
-          <Button
-            text="Delete Wallet"
-            onClick={() => setStatus(stateProp.delete)}
-          />
+          {/* Add Wallet click garda status update huncha */}
+          {status == stateProp.show ? (
+            <Button
+              text="Start Generating"
+              onClick={() => {
+                setStatus(stateProp.show);
+                setStatus(stateProp.hide);
+                setTimeout(() => {
+                  setStatus(stateProp.add);
+                },100);
+              }}
+              color="slate"
+            />
+          ) : (
+            ""
+          )}
+          {/* Delete Wallet click garda status update huncha but delete functionality define vayeko xaina */}
         </div>
+      </div>
 
-      
+      {/* Blockchain component display garne thau */}
+      <div className="flex justify-center items-center mt-4">
+        {/* Jaba status "add" huncha taba matra Blockchain component render huncha */}
+        {status === stateProp.add && <Blockchain type="solana" />}
       </div>
     </div>
-    <div className="flex justify-center items-center">
-    <div>
-    <Blockchain type="solana"/>
-    <Blockchain type="solana"/>
-    </div>
-    </div>
-
-    </div>
-
   );
 };
-
 
 // return (
 //     <div>
