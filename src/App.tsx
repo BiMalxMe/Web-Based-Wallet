@@ -22,10 +22,12 @@ if (!window.Buffer) {
 
 function App() {
   const [solana, setSolana] = useState(false);
+  const [block,setBlock] = useState("")
   console.log(solana);
   const [etherium, setEtherium] = useState(false);
   const [mnemonic, setMnemonic] = useState(""); // Should be a string, not an array
   const [display, setDisplay] = useState(false);
+  
 
   const wordsArray = mnemonic.split(" ");
   console.log(wordsArray);
@@ -34,10 +36,10 @@ function App() {
           <ToastContainer/>
 
       <Appbar />
-      {solana ? (
+      {block ? (
         <div>
           {/* <Blockchain type="solana" /> */}
-          < AddDelWallet />
+          < AddDelWallet type={block}/>
         </div>
       ) : (
         ""
@@ -45,8 +47,8 @@ function App() {
 
       {!solana ? (
         <Main
-          solana={() => setSolana(true)}
-          etherium={() => setEtherium(true)}
+          solana={() => setBlock("solana")}
+          etherium={() => setBlock("etherium")}
         />
       ) : (
         ""
