@@ -107,7 +107,7 @@ export const Blockchain = ({ type }: BlockProps) => {
           wallets.map((wallet, index) => (
             <div key={index} className="relative border border-slate-900 rounded-2xl p-4 shadow-lg hover:bg-slate-700 hover:scale-100 my-4 flex flex-col">
               <p className="text-center font-extrabold bg-slate-600">Wallet {index + 1}</p>
-              <div className="">
+              <div className="flex"><div>
               <p className="text-center my-4 font-bold">
                 Public Key: <span className="font-light mx-4 bg-gray-800">{wallet.publicKey}</span>
               </p>
@@ -121,18 +121,21 @@ export const Blockchain = ({ type }: BlockProps) => {
                     notify("Copied to Clipboard");
                   }}
                   readOnly
-                  className="w-full bg-gray-800 font-light mx-4 px-2 py-1 rounded"
+                  className="w-full bg-gray-800 font-light mx-4 px-2 py-1 rounded focus:outline-none cursor-pointer"
                 />
                 <div onClick={() => setPassword(!password)}>
                   {password ? <Show /> : <Hide />}
                 </div>
               </p>
+              </div>
+              <div className=" border-red-500 rounded-full w-10 h-10 flex items-center justify-center hover:bg-slate-900 active:bg-slate-700">
               <button
                 onClick={() => deleteWallet(index)}
-                className=" top-4 right-1 text-red-500 hover:text-red-700"
+                className=" top-4 right-1 text-red-500 hover:text-red-700 align-top flex m-4 justify-center items-center "
               >
                 <Delete />
               </button>
+              </div>
               </div>
             </div>
           ))
