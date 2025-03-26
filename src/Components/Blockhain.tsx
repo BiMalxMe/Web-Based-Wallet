@@ -81,12 +81,13 @@ export const Blockchain = ({ type }: BlockProps) => {
       
       {shouldDisplayMnemonic && (
         <div>
-          <div className="flex justify-center items-center gap-4">
-            <h2 className="text-2xl">Mnemonic Words</h2>
-            <div onClick={() => setExtend(!extend)}>
-              {extend ? <Downarrow /> : <UpArrow />}
-            </div>
-          </div>
+        <div className="flex justify-center items-center gap-4 bg-slate-900 rounded-2xl w-full  px-4 py-2">
+  <h2 className="text-2xl text-white">Mnemonic Words</h2>
+  <div className="hover:bg-slate-700 rounded-full p-2 cursor-pointer" onClick={() => setExtend(!extend)}>
+    {extend ? <Downarrow /> : <UpArrow />}
+  </div>
+</div>
+
           {!extend && (
             <ul className="grid grid-cols-4 gap-2 m-4">
               {globalMnemonicWords.map((word, index) => (
@@ -100,7 +101,7 @@ export const Blockchain = ({ type }: BlockProps) => {
       )}
       
       <div>
-        <h2 className="flex justify-center">Generated {type} Wallets</h2>
+        <h2 className="flex justify-center bg-slate-800 rounded-br-full rounded-bl-full m-4 py-2">Generated {type} Wallets</h2>
         {wallets.length === 0 ? (
           <p className="text-center">No wallets generated yet...</p>
         ) : (
