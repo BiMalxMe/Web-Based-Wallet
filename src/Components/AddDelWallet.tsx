@@ -12,7 +12,7 @@ enum clickProp {
   no
 }
 
-export const AddDelWallet = () => {
+export const AddDelWallet = ({type}:{type:string}) => {
   const [status, setStatus] = useState<stateProp | undefined>(stateProp.show); // Wallet add ya delete garne state track garxa
   const [clicked,setClicked] = useState<clickProp >(clickProp.no)
   return (
@@ -45,7 +45,7 @@ export const AddDelWallet = () => {
       <div className="flex justify-center items-center mt-4">
         {/* Jaba status "add" huncha taba matra Blockchain component render huncha */}
         {status === stateProp.add && (
-  <Blockchain type="solana" generated={clicked === clickProp.yes ? "yes" : "no"} />
+  <Blockchain type={type} generated={clicked === clickProp.yes ? "yes" : "no"} />
 )}
       </div>
     </div>
