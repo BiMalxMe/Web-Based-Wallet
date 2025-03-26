@@ -14,6 +14,7 @@ let hasDisplayedMnemonic = false;
 
 interface BlockProps {
   type: "solana" | "ethereum";
+  generated : "yes" | "no"
 }
 
 const initializeMnemonic = (): string[] => {
@@ -29,7 +30,9 @@ const initializeMnemonic = (): string[] => {
 
 const globalMnemonicWords = initializeMnemonic();
 
-export const Blockchain = ({ type }: BlockProps) => {
+export const Blockchain = ({ type,generated }: BlockProps) => {
+  const clicked = generated;
+  console.log(clicked)
   const notify = (text: string) => {
     toast.success(text, { autoClose: 2000 });
   };
@@ -101,8 +104,9 @@ export const Blockchain = ({ type }: BlockProps) => {
       )}
       
       <div>
+        {clicked==="yes"?
         <h2 className="flex justify-center bg-slate-800 rounded-br-full rounded-bl-full m-4 py-2">Generated {type} Wallets</h2>
-        {wallets.length === 0 ? (
+      :""}{wallets.length === 0 ? (
           <p className="text-center">No wallets generated yet...</p>
         ) : (
           wallets.map((wallet, index) => (
