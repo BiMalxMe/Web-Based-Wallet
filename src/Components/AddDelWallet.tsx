@@ -45,6 +45,7 @@ export const AddDelWallet = ({type}:{type:string}) => {
       <div className="flex justify-center items-center mt-4">
         {/* Jaba status "add" huncha taba matra Blockchain component render huncha */}
         {status === stateProp.add && (
+          // @ts-ignore
   <Blockchain type={type} generated={clicked === clickProp.yes ? "yes" : "no"} />
 )}
       </div>
