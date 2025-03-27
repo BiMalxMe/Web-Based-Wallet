@@ -18,6 +18,7 @@ function App() {
   const [block,setBlock] = useState("")
   
 
+  
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-700 text-white pt-20">
           <ToastContainer/>
@@ -32,14 +33,12 @@ function App() {
         ""
       )}
 
-      {!solana ? (
+    
         <Main
           solana={() => setBlock("solana")}
           etherium={() => setBlock("etherium")}
         />
-      ) : (
-        ""
-      )}
+   
     </div>
   );
 }
