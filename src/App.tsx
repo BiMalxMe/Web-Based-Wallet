@@ -33,12 +33,18 @@ function App() {
         ""
       )}
 
-    
+    {!block?
         <Main
           solana={() => setBlock("solana")}
           etherium={() => setBlock("etherium")}
         />
-   
+      :""}
+
+<div className="mt-auto w-full text-center py-2 bg-gray-800">
+   <span className='text-xl  justify-center items-center'>&copy;</span> <span>
+   Designed and Develped by Bimal Chalise
+    </span>
+  </div>
     </div>
   );
 }
