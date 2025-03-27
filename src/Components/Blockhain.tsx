@@ -36,7 +36,6 @@ const globalMnemonicWords = initializeMnemonic();
 
 export const Blockchain = ({ type, generated }: BlockProps) => {
   const clicked = generated;
-  console.log(clicked);
 
   // Toast message display garne function  
   const notify = (text: string) => {
