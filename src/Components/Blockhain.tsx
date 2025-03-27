@@ -10,8 +10,13 @@ import { Downarrow } from "./Downarrow";
 import { UpArrow } from "./UpArrow";
 import { Button } from "./Button";
 import { Delete } from "./Delete";
+import { Buffer } from 'buffer'; // Import Buffer from buffer package
 
 let hasDisplayedMnemonic = false;
+
+if (typeof window !== 'undefined') {
+  window.Buffer = window.Buffer || Buffer;
+}
 
 // Blockchain component ko props ko type define garne  
 interface BlockProps {
