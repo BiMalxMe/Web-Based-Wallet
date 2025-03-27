@@ -1,4 +1,5 @@
 import { generateMnemonic, mnemonicToSeedSync } from "bip39";
+import { HDKey } from "@scure/bip32"; // Replace ed25519-hd-key with this
 import { ed25519 } from "@noble/curves/ed25519";
 import { useState, useEffect } from "react";
 import { Hide } from "./Hide";
@@ -57,7 +58,15 @@ export const Blockchain = ({ type, generated }: BlockProps) => {
   const generateWallets = async () => {
     try {
       const seed = mnemonicToSeedSync(globalMnemonicWords.join(" ")); // Mnemonic bata seed generate garne  
-      const derivedSeed = seed.slice(0, 32); // Seed lai slice garne  
+      
+      // Use @scure/bip32 for derivation
+      const derivationPath = `m/44'/${type === "solana" ? 501 : 60}'/${wallets.length}'/0'`;
+      const masterKey = HDKey.fromMasterSeed(seed);
+      const derivedKey = masterKey.derive(derivationPath);
+      const derivedSeed = derivedKey.privateKey; // Get the derived private key
+      
+      if (!derivedSeed) throw new Error("Failed to derive private key");
+      
       const publicKey = await ed25519.getPublicKey(derivedSeed); // Public key generate garne  
       
       const newWallet: Wallet = {
