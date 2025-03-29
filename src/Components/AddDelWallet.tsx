@@ -8,7 +8,6 @@ enum stateProp {
   add,
 }
 
-
 export const AddDelWallet = ({type}:{type:string}) => {
   const [status, setStatus] = useState<stateProp | undefined>(stateProp.show); // Wallet add ya delete garne state track garxa
   return (
@@ -16,8 +15,8 @@ export const AddDelWallet = ({type}:{type:string}) => {
   
    
       {/* Upar ko section jaha button haru cha */}
-      <div className=" flex justify-center items-center">
-        <div className="flex gap-4">
+      <div className="  justify-center items-center">
+        <div className="  hover:bg-cyan-900 flex gap-4 bg-slate-900 rounded-tr-xl rounded-bl-xl rounded-tl-4xl rounded-br-4xl p-5">
           {/* Add Wallet click garda status update huncha */}
           {status == stateProp.show ? (
             <Button
