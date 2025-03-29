@@ -7,16 +7,12 @@ enum stateProp {
   hide,
   add,
 }
-enum clickProp {
-  yes,
-  no
-}
+
 
 export const AddDelWallet = ({type}:{type:string}) => {
   const [status, setStatus] = useState<stateProp | undefined>(stateProp.show); // Wallet add ya delete garne state track garxa
-  const [clicked,setClicked] = useState<clickProp >(clickProp.no)
   return (
-    <div className="mt-40 p-8 rounded-bl-4xl rounded-tr-4xl flower-bg bg-cyan-900 mb-10">
+    <div className="mt-10 p-8 rounded-bl-4xl rounded-tr-4xl flower-bg bg-cyan-900 mb-10">
   
    
       {/* Upar ko section jaha button haru cha */}
@@ -29,7 +25,6 @@ export const AddDelWallet = ({type}:{type:string}) => {
               onClick={() => {
                 setStatus(stateProp.show);
                 setStatus(stateProp.hide);
-                setClicked(clickProp.yes)
                 setTimeout(() => {
                   setStatus(stateProp.add);
                 },100);
@@ -48,7 +43,7 @@ export const AddDelWallet = ({type}:{type:string}) => {
         {/* Jaba status "add" huncha taba matra Blockchain component render huncha */}
         {status === stateProp.add && (
           // @ts-ignore
-  <Blockchain type={type} generated={clicked === clickProp.yes ? "yes" : "no"} />
+  <Blockchain type={type} />
 )}
       </div>
     </div>
