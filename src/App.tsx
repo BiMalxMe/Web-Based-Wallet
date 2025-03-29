@@ -8,7 +8,7 @@ import { Appbar } from "./Components/Appbar";
 import { Main } from "./Components/Main";
 import { AddDelWallet } from "./Components/AddDelWallet";
 
-// Ensure Buffer is available in the browser
+// Bufffer le sahayeta garxa browser ma runn garnalaiii
 //@ts-ignore
 if (!window.Buffer) {
   window.Buffer = Buffer;
